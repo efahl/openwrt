@@ -91,7 +91,9 @@ define prepare_rootfs
 			fi; \
 			[ -n "$(CONFIG_USE_APK)" ] && $(STAGING_DIR_HOST)/bin/tar --delete -f ./lib/apk/db/scripts.tar $$(basename $$script); \
 		done; \
-		if [ -z "$(CONFIG_USE_APK)" ]; then \
+		if [ -n "$(CONFIG_USE_APK)" ]; then \
+			gzip -9 ./lib/apk/db/scripts.tar; \
+		else \
 			$(if $(IB),,awk -i inplace \
 				'/^Status:/ { \
 					if ($$3 == "user") { $$3 = "ok" } \
